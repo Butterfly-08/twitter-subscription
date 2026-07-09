@@ -124,8 +124,8 @@ const login = async (req, res, next) => {
 
     // 3. Chrome specific OTP logic
     const isChrome = deviceDetails.browser.toLowerCase().includes('chrome') && 
-                     !deviceDetails.browser.toLowerCase().includes('edg') && 
-                     !deviceDetails.browser.toLowerCase().includes('edge');
+                    !deviceDetails.browser.toLowerCase().includes('edg') && 
+                    !deviceDetails.browser.toLowerCase().includes('edge');
 
     if (isChrome) {
       const otp = generateOtp();
@@ -292,7 +292,7 @@ const forgotPassword = async (req, res, next) => {
     console.log(`--- [FORGOT PASSWORD] New password generated for user ${user.username}: ${newPassword} ---`);
 
     // Send email with new password
-    const emailSent = await sendOtpEmail(
+    await sendOtpEmail(
       user.email,
       newPassword,
       'Your New Temp Password Node'

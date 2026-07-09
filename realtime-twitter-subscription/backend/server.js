@@ -69,10 +69,10 @@ const startServer = async () => {
 
   // Start HTTP Server
   server.listen(env.PORT, () => {
-    console.log(`===========================================================`);
+    console.log(`============================================================`);
     console.log(` Server running in ${env.NODE_ENV} mode on port ${env.PORT}`);
     console.log(` WebSockets enabled and listening for client nodes`);
-    console.log(`===========================================================`);
+    console.log(`============================================================`);
   });
 };
 

@@ -48,16 +48,16 @@ realtime-twitter-subscription/
 ├── backend/
 │   ├── config/          # Configurations (DB, mailer, SMS twilio, plan pricing, env)
 │   ├── controllers/     # Controller modules (auth, tweets, payments, language)
-│   ├── middlewares/     # Middlewares (JWT auth, error handler, rate-limit, upload handler)
+│   ├── middlewares/     # Middlewares (JWT auth, error handler, rate limit, upload handler)
 │   ├── models/          # Mongoose database models (User, Tweet, LoginHistory, Payment, etc)
 │   ├── routes/          # API Routers
 │   ├── utils/           # Utilities (device detector, mobile checks, OTP timers, password generators)
 │   ├── app.js           # Express app instance setup
 │   └── server.js        # Server initialization and WebSocket connector
-├── frontend/
-│   ├── assets/          # Static styles, javascript modules, and canvas graphics
-│   ├── locales/         # Multi-language translation JSON bundles
-│   └── index.html       # Single-Page-App dashboard dashboard container
+└── frontend/
+    ├── assets/          # Static styles, javascript modules, and canvas graphics
+    ├── locales/         # Multi-language translation JSON bundles
+    └── index.html       # Single-Page-App dashboard dashboard container
 └── .env                 # Environment variables configuration
 ```
 

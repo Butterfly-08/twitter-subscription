@@ -15,7 +15,7 @@ const getCurrentISTMonth = () => {
   return `${year}-${month}`;
 };
 
-// Check and increment tweet count based on plan limits
+// Check and increment tweet limit based on plan limits
 const checkAndIncrementTweetLimit = async (user) => {
   const currentMonth = getCurrentISTMonth();
   
