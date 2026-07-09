@@ -1,0 +1,79 @@
+.mac-dock-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  border-radius: 1.25rem;
+  background-color: rgba(11, 15, 25, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0 0.75rem 0.75rem;
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  height: 68px; /* Managed by JS */
+  transition: height 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+}
+
+.mac-dock-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  outline: none;
+  font-size: calc(var(--dock-item-size) * 0.45);
+  width: var(--dock-item-size);
+  height: var(--dock-item-size);
+  /* The transition duration handles the "spring" back when mouse leaves.
+     During active hover, the transition handles smooth movement between items. */
+  transition: width 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              height 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              font-size 0.15s cubic-bezier(0.2, 0.8, 0.2, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease;
+  will-change: width, height, font-size;
+}
+
+.mac-dock-item:hover, .mac-dock-item.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.mac-dock-item.active {
+  border-color: var(--accent-cyan, #00f0ff);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.mac-dock-item:hover .mac-dock-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+.mac-dock-label {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  width: fit-content;
+  white-space: pre;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(11, 15, 25, 0.95);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #fff;
+  opacity: 0;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}

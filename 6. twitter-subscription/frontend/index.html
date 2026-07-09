@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="page_title">My Website</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/language-switcher.css">
+  <link rel="stylesheet" href="/assets/css/otp-modal.css">
+</head>
+<body>
+  <canvas class="global-background-canvas" id="global-background-canvas"></canvas>
+  <div class="global-ambient-glow" id="global-ambient-glow"></div>
+
+  <header>
+    <nav>
+      <div class="logo" data-i18n="brand_name">MyApp</div>
+      <div class="header-right">
+        <span id="user-display" style="display: none; font-size: 0.95rem; font-weight: 500; color: #a855f7;"></span>
+        <button id="logout-btn" data-i18n="btn_logout" style="display: none;">Logout</button>
+        <button id="mock-login-btn" style="display: none;">Mock Login</button>
+        <select id="language-switcher" aria-label="Select language">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="hi">हिन्दी</option>
+          <option value="pt">Português</option>
+          <option value="zh">中文</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Auth Section (Shown when logged out) -->
+  <div id="auth-section">
+    <div class="hero-layout-grid">
+      <!-- Left Marketing Panel -->
+      <div class="marketing-pane">
+        <span class="premium-tag" id="auth-tag" data-i18n="auth_tag_login">⚡ Secure Access Node</span>
+        <h1 class="headline" id="auth-headline" data-i18n="auth_headline_login">Secure your digital feed.</h1>
+        <p class="subtext" data-i18n="welcome_subtext">
+          Select your language to get started.
+        </p>
+      </div>
+
+      <!-- Right Auth Module Container -->
+      <div class="glass-auth-container">
+        <div class="brand-header">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M23.643 2.9c-.85.39-1.764.65-2.723.77a4.796 4.796 0 0 0 2.084-2.64 9.53 9.53 0 0 1-3.033 1.17 4.773 4.773 0 0 0-8.14 4.36 13.553 13.553 0 0 1-9.84-5 4.8 4.8 0 0 0 1.48 6.4 4.72 4.72 0 0 1-2.17-.6v.06a4.78 4.78 0 0 0 3.83 4.69 4.79 4.79 0 0 1-2.15.08 4.8 4.8 0 0 0 4.47 3.33 9.593 9.593 0 0 1-5.94 2.05c-.38 0-.76-.02-1.14-.07a13.525 13.525 0 0 0 7.33 2.15c8.8 0 13.61-7.3 13.61-13.6 0-.21 0-.41-.02-.62A9.748 9.748 0 0 0 24 3c-.83.37-1.72.62-2.65.73A4.814 4.814 0 0 0 23.64 2.9z"
+              fill="#00f0ff" id="logo-icon" />
+          </svg>
+          <h2 data-i18n="brand_header_title">TweetBox Premium</h2>
+          <p data-i18n="brand_header_sub">Cryptographic Node Hub</p>
+        </div>
+
+        <!-- Tab Switches -->
+        <div class="tab-box">
+          <button class="tab-trigger active" id="tab-login-btn" data-i18n="tab_login">Login</button>
+          <button class="tab-trigger" id="tab-register-btn" data-i18n="tab_register">Registration</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="form-group">
+          <div class="input-wrapper">
+            <input class="form-input-node" type="text" id="login-username" data-i18n="placeholder_username" placeholder="Username" required>
+          </div>
+          <div class="input-wrapper password-field">
+            <input class="form-input-node" type="password" id="login-password" data-i18n="placeholder_password" placeholder="Password" required>
+            <button type="button" class="toggle-password-btn" id="toggle-login-password">Show</button>
+          </div>
+          <button type="submit" class="submit-btn-node" data-i18n="btn_login">Login</button>
+        </form>
+
+        <!-- OTP Verification Form -->
+        <form id="otp-form" class="form-group" style="display: none;">
+          <p id="otp-message-text" data-i18n="otp_instruction"
+            style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; text-align: center; margin: 0 0 0.5rem 0;">
+            Chrome Browser detected. A 6-digit keyphrase token has been transmitted to your secure email matrix.
+          </p>
+          <div class="input-wrapper">
+            <input class="form-input-node" type="text" id="otp-value" data-i18n="otp_input_placeholder" placeholder="Enter 6-digit token" maxlength="6"
+              required>
+          </div>
+          <button type="submit" class="submit-btn-node" id="otp-submit-btn" data-i18n="btn_verify_bind">Verify Token & Bind</button>
+          <a class="back-link-action" id="cancel-otp-btn" data-i18n="link_terminate">
+            ← Terminate & Return to Login
+          </a>
+        </form>
+
+        <!-- Register Form (hidden initially) -->
+        <form id="register-form" class="form-group" style="display: none;">
+          <div class="input-wrapper">
+            <input class="form-input-node" type="text" id="reg-name" data-i18n="placeholder_name" placeholder="Full Name" required>
+          </div>
+          <div class="input-wrapper">
+            <input class="form-input-node" type="text" id="reg-username" data-i18n="placeholder_username" placeholder="Username" required>
+          </div>
+          <div class="input-wrapper">
+            <input class="form-input-node" type="email" id="reg-email" data-i18n="placeholder_email" placeholder="Email" required>
+          </div>
+          <div class="input-wrapper">
+            <input class="form-input-node" type="tel" id="reg-phone" data-i18n="placeholder_phone" placeholder="Phone Number" required>
+          </div>
+          <div class="input-wrapper password-field">
+            <input class="form-input-node" type="password" id="reg-password" data-i18n="placeholder_password" placeholder="Password" required>
+            <button type="button" class="toggle-password-btn" id="toggle-reg-password">Show</button>
+          </div>
+          <button type="submit" class="submit-btn-node" data-i18n="btn_register">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Section (Shown when logged in) -->
+  <main id="app-section" style="display: none;">
+    <div class="welcome-card">
+      <h1 id="welcome-user-heading" data-i18n="welcome_heading">Welcome</h1>
+      <p data-i18n="welcome_description">Select your language to get started.</p>
+    </div>
+  </main>
+
+  <footer>
+    <p data-i18n="footer_copyright">&copy; 2026 MyApp. All rights reserved.</p>
+  </footer>
+
+  <div id="otp-modal-container"></div>
+  <div id="toast-container"></div>
+
+  <script src="/assets/js/apiClient.js"></script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/otpModal.js"></script>
+  <script src="/assets/js/languageSwitcher.js"></script>
+  <script src="/assets/js/background.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

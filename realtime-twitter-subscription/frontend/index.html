@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="page_title">TweetBox Premium Node</title>
+  
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/language-switcher.css">
+  <link rel="stylesheet" href="/assets/css/otp-modal.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <link rel="stylesheet" href="/assets/css/BorderGlow.css">
+  <link rel="stylesheet" href="/assets/css/Dock.css">
+</head>
+<body>
+  <!-- Particle canvas and glows -->
+  <canvas class="global-background-canvas" id="global-background-canvas"></canvas>
+  <div class="global-ambient-glow" id="global-ambient-glow"></div>
+
+  <!-- Header -->
+  <header>
+    <nav>
+      <div class="logo" data-i18n="brand_name">TweetBox</div>
+      <div class="header-right">
+        <span id="user-display" style="display: none; font-size: 0.95rem; font-weight: 600; color: var(--accent-cyan);"></span>
+        <button id="logout-btn" data-i18n="btn_logout" style="display: none;">Logout</button>
+        <select id="language-switcher" aria-label="Select language">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="hi">हिन्दी</option>
+          <option value="pt">Português</option>
+          <option value="zh">中文</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Content Workspace -->
+  <main>
+    
+    <!-- AUTH SECTION (Shown when logged out) -->
+    <div id="auth-section" style="width: 100%;">
+      <div class="hero-layout-grid">
+        <!-- Left Pane -->
+        <div class="marketing-pane">
+          <span class="premium-tag" id="auth-tag" data-i18n="auth_tag_login">⚡ Secure Access Node</span>
+          <h1 class="headline" id="auth-headline" data-i18n="auth_headline_login">Secure your digital feed.</h1>
+          <p class="subtext" data-i18n="welcome_subtext">
+            Select your preferred language to establish connection.
+          </p>
+        </div>
+
+        <!-- Right Glass Login Form with BorderGlow -->
+        <div class="glass-auth-container border-glow-card" data-glow-color="180 100% 50%">
+          <span class="edge-light"></span>
+          <div class="border-glow-inner">
+          <div class="brand-header">
+            <!-- Brand Icon SVG -->
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+              <path d="M23.643 2.9c-.85.39-1.764.65-2.723.77a4.796 4.796 0 0 0 2.084-2.64 9.53 9.53 0 0 1-3.033 1.17 4.773 4.773 0 0 0-8.14 4.36 13.553 13.553 0 0 1-9.84-5 4.8 4.8 0 0 0 1.48 6.4 4.72 4.72 0 0 1-2.17-.6v.06a4.78 4.78 0 0 0 3.83 4.69 4.79 4.79 0 0 1-2.15.08 4.8 4.8 0 0 0 4.47 3.33 9.593 9.593 0 0 1-5.94 2.05c-.38 0-.76-.02-1.14-.07a13.525 13.525 0 0 0 7.33 2.15c8.8 0 13.61-7.3 13.61-13.6 0-.21 0-.41-.02-.62A9.748 9.748 0 0 0 24 3c-.83.37-1.72.62-2.65.73A4.814 4.814 0 0 0 23.64 2.9z" fill="#00f0ff" id="logo-icon" />
+            </svg>
+            <h2 data-i18n="brand_header_title">TweetBox Premium</h2>
+            <p data-i18n="brand_header_sub">Cryptographic Node Hub</p>
+          </div>
+
+          <!-- Tabs -->
+          <div class="tab-box" style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 1.5rem;">
+            <button class="tab-trigger active" id="tab-login-btn" data-i18n="tab_login">Login</button>
+            <button class="tab-trigger" id="tab-register-btn" data-i18n="tab_register">Registration</button>
+          </div>
+
+          <!-- Login Input Form -->
+          <form id="login-form" class="form-group" style="display: flex; flex-direction: column; gap: 1rem;">
+            <div class="input-wrapper">
+              <input class="form-input-node" type="text" id="login-username" data-i18n="placeholder_username" placeholder="Username" required>
+            </div>
+            <div class="input-wrapper password-field" style="position: relative;">
+              <input class="form-input-node" type="password" id="login-password" data-i18n="placeholder_password" placeholder="Password" required>
+              <button type="button" class="toggle-password-btn" id="toggle-login-password" style="position: absolute; right: 10px; top: 10px; background: transparent; border: none; color: var(--accent-cyan); cursor: pointer; font-size: 0.85rem;">Show</button>
+            </div>
+            <div style="text-align: right;">
+              <a href="#" id="forgot-password-link" style="font-size: 0.85rem; color: var(--text-muted);">Forgot Password?</a>
+            </div>
+            <button type="submit" class="submit-btn-node" data-i18n="btn_login">Login</button>
+          </form>
+
+          <!-- Chrome Login OTP Form -->
+          <form id="otp-form" class="form-group" style="display: none; flex-direction: column; gap: 1rem;">
+            <p id="otp-message-text" data-i18n="otp_instruction" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; text-align: center;">
+              Google Chrome detected. A 6-digit keyphrase token has been transmitted to your email.
+            </p>
+            <div class="input-wrapper">
+              <input class="form-input-node" type="text" id="otp-value" data-i18n="otp_input_placeholder" placeholder="Enter 6-digit token" maxlength="6" required>
+            </div>
+            <button type="submit" class="submit-btn-node" id="otp-submit-btn" data-i18n="btn_verify_bind">Verify & Authenticate</button>
+            <a class="back-link-action" id="cancel-otp-btn" data-i18n="link_terminate" style="text-align: center; cursor: pointer; font-size: 0.85rem; color: var(--text-muted);">
+              ← Terminate & Return to Login
+            </a>
+          </form>
+
+          <!-- Registration Input Form -->
+          <form id="register-form" class="form-group" style="display: none; flex-direction: column; gap: 1rem;">
+            <div class="input-wrapper">
+              <input class="form-input-node" type="text" id="reg-name" data-i18n="placeholder_name" placeholder="Full Name" required>
+            </div>
+            <div class="input-wrapper">
+              <input class="form-input-node" type="text" id="reg-username" data-i18n="placeholder_username" placeholder="Username" required>
+            </div>
+            <div class="input-wrapper">
+              <input class="form-input-node" type="email" id="reg-email" data-i18n="placeholder_email" placeholder="Email Address" required>
+            </div>
+            <div class="input-wrapper">
+              <input class="form-input-node" type="tel" id="reg-phone" data-i18n="placeholder_phone" placeholder="Mobile Number (Optional)">
+            </div>
+            <div class="input-wrapper password-field" style="position: relative;">
+              <input class="form-input-node" type="password" id="reg-password" data-i18n="placeholder_password" placeholder="Password" required>
+              <button type="button" class="toggle-password-btn" id="toggle-reg-password" style="position: absolute; right: 10px; top: 10px; background: transparent; border: none; color: var(--accent-cyan); cursor: pointer; font-size: 0.85rem;">Show</button>
+            </div>
+            <button type="submit" class="submit-btn-node" data-i18n="btn_register">Register</button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP SECTION (Shown when logged in) -->
+    <div id="app-section" class="app-container" style="display: none;">
+      <!-- Left Sidebar Tabs (Hidden in favor of bottom dock) -->
+      <aside class="dashboard-sidebar" style="display: none;">
+        <button class="sidebar-btn active" data-tab="feed-tab">
+          <span>📰</span> <span data-i18n="tab_feed">Real-Time Feed</span>
+        </button>
+        <button class="sidebar-btn" data-tab="compose-tab">
+          <span>✍️</span> <span data-i18n="tab_compose">Compose Tweet</span>
+        </button>
+        <button class="sidebar-btn" data-tab="sub-tab">
+          <span>💳</span> <span data-i18n="tab_billing">Plans & Billing</span>
+        </button>
+        <button class="sidebar-btn" data-tab="history-tab">
+          <span>🕒</span> <span data-i18n="tab_history">Login History</span>
+        </button>
+        <button class="sidebar-btn" data-tab="settings-tab">
+          <span>⚙️</span> <span data-i18n="tab_settings">Settings</span>
+        </button>
+      </aside>
+
+      <!-- Right Dashboard Content Pane -->
+      <div class="dashboard-content">
+        
+        <!-- FEED TAB -->
+        <div id="feed-tab" class="tab-pane active">
+          <div class="glass-panel">
+            <h2>Real-Time Feed</h2>
+            <div class="tweets-list" id="tweets-feed-container">
+              <!-- Loaded dynamically -->
+              <p style="color: var(--text-muted);" id="feed-loading-msg">Connecting to timelines...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPOSE TAB -->
+        <div id="compose-tab" class="tab-pane">
+          <!-- Text Tweet Card -->
+          <div class="glass-panel">
+            <h2>Compose Text Tweet</h2>
+            <form id="text-tweet-form" style="display: flex; flex-direction: column; gap: 1rem;">
+              <div class="input-wrapper">
+                <textarea class="form-input-node" id="tweet-text-content" rows="4" placeholder="What's happening on the secure node?" maxlength="280" required></textarea>
+                <div class="char-count" id="text-char-count">0 / 280</div>
+              </div>
+              <button type="submit" class="submit-btn-node">Post Text Tweet</button>
+            </form>
+          </div>
+
+          <!-- Audio Tweet Card -->
+          <div class="glass-panel">
+            <h2>Compose Audio Tweet</h2>
+            <!-- Audio upload time window notification banner -->
+            <div id="audio-time-window-banner" class="time-banner" style="margin-bottom: 1rem;">
+              <span>🕒 Audio uploads window: 2:00 PM - 7:00 PM IST</span>
+              <strong id="audio-window-status">Loading...</strong>
+            </div>
+
+            <!-- OTP Authentication lock for uploads -->
+            <div id="upload-otp-container" style="background: rgba(11, 15, 25, 0.5); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+              <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: #fbbf24;">🔒 Verification Lock Required</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                Audio uploads require a verification token. Request code to registered email.
+              </p>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="buy-btn" id="send-upload-otp-btn" style="background: var(--accent-violet);">Send OTP Code</button>
+                <div id="upload-otp-verify-inputs" style="display: none; align-items: center; gap: 0.5rem;">
+                  <input type="text" class="form-input-node" id="upload-otp-val" placeholder="6-digit code" maxlength="6" style="width: 140px; padding: 0.5rem;">
+                  <button type="button" class="submit-btn-node" id="verify-upload-otp-btn" style="padding: 0.5rem 1rem;">Verify & Unlock</button>
+                </div>
+              </div>
+              <div id="upload-token-status" style="margin-top: 0.5rem; font-size: 0.85rem; color: #10b981; display: none;">
+                ✓ Verification token bind successfully. Upload unlocked!
+              </div>
+            </div>
+
+            <!-- Voice Recorder / Uploader wrapper -->
+            <div id="audio-composer-wrapper" style="opacity: 0.5; pointer-events: none; transition: opacity 0.3s ease;">
+              <form id="audio-tweet-form" style="display: flex; flex-direction: column; gap: 1.2rem;">
+                
+                <div class="recording-container" id="drop-zone">
+                  <div class="record-btn-wrapper">
+                    <button type="button" class="record-circle-btn" id="record-action-btn">🎤</button>
+                  </div>
+                  
+                  <span id="recording-timer" style="font-weight: 600; color: #f87171; display: none;">00:00</span>
+                  
+                  <!-- Visual waveform during voice recording -->
+                  <canvas class="waveform-canvas" id="voice-waveform-canvas"></canvas>
+                  
+                  <div style="color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+                    Drag & Drop an audio file or click <strong>Record</strong> above
+                    <br><span style="font-size: 0.8rem;">(Supports: .mp3, .wav, .m4a - Cap: 100MB / 5 mins)</span>
+                  </div>
+
+                  <!-- Audio Preview Player -->
+                  <div id="audio-preview-player" class="audio-player-container" style="display: none; margin-top: 1rem;">
+                    <audio id="recording-preview-el" controls></audio>
+                    <button type="button" id="discard-audio-btn" style="background: transparent; border: none; color: #ef4444; font-size: 1.2rem; cursor: pointer;">✕</button>
+                  </div>
+                </div>
+
+                <div class="input-wrapper">
+                  <input type="text" class="form-input-node" id="audio-caption-content" placeholder="Add an optional caption for your voice tweet..." maxlength="280">
+                </div>
+
+                <button type="submit" class="submit-btn-node" id="audio-post-submit-btn" disabled>Post Audio Tweet</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLANS & SUBSCRIPTIONS TAB -->
+        <div id="sub-tab" class="tab-pane">
+          <div class="glass-panel">
+            <h2>Subscription Tiers & Plan Access</h2>
+            
+            <!-- Payment allowed window alert -->
+            <div id="payment-time-window-banner" class="time-banner" style="margin-bottom: 1rem;">
+              <span>🕒 Payments accepted window: 10:00 AM - 11:00 AM IST</span>
+              <strong id="payment-window-status">Loading...</strong>
+            </div>
+
+            <div class="pricing-grid">
+              <!-- Free -->
+              <div class="price-card" id="plan-free-card">
+                <div class="plan-name">Free Plan</div>
+                <div class="plan-price">₹0<span>/month</span></div>
+                <ul class="plan-features">
+                  <li>Limit: 1 tweet per month</li>
+                  <li>Basic feed access</li>
+                  <li>No audio tweets</li>
+                </ul>
+                <button class="buy-btn" id="buy-free-btn" disabled>Current Plan</button>
+              </div>
+
+              <!-- Bronze -->
+              <div class="price-card" id="plan-bronze-card">
+                <div class="plan-name">Bronze Plan</div>
+                <div class="plan-price">₹100<span>/month</span></div>
+                <ul class="plan-features">
+                  <li>Limit: 3 tweets per month</li>
+                  <li>Audio tweets unlocked</li>
+                  <li>Real-time notifications</li>
+                </ul>
+                <button class="buy-btn" onclick="purchaseSubscription('bronze')">Upgrade</button>
+              </div>
+
+              <!-- Silver -->
+              <div class="price-card" id="plan-silver-card">
+                <div class="plan-name">Silver Plan</div>
+                <div class="plan-price">₹300<span>/month</span></div>
+                <ul class="plan-features">
+                  <li>Limit: 5 tweets per month</li>
+                  <li>Audio tweets unlocked</li>
+                  <li>Real-time notifications</li>
+                </ul>
+                <button class="buy-btn" onclick="purchaseSubscription('silver')">Upgrade</button>
+              </div>
+
+              <!-- Gold -->
+              <div class="price-card" id="plan-gold-card">
+                <div class="plan-name">Gold Plan</div>
+                <div class="plan-price">₹1000<span>/month</span></div>
+                <ul class="plan-features">
+                  <li>Unlimited tweets</li>
+                  <li>Audio tweets unlocked</li>
+                  <li>Dedicated real-time feed</li>
+                </ul>
+                <button class="buy-btn" onclick="purchaseSubscription('gold')">Upgrade</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORY TAB -->
+        <div id="history-tab" class="tab-pane">
+          <div class="glass-panel">
+            <h2>Cryptographic Node Access History</h2>
+            <div class="history-table-container">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>Date / Time</th>
+                    <th>IP Address</th>
+                    <th>Browser</th>
+                    <th>OS</th>
+                    <th>Device</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="login-history-rows-container">
+                  <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted);">Fetching history records...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="settings-tab" class="tab-pane">
+          <div class="glass-panel">
+            <h2>Application Preferences</h2>
+            <div class="settings-group">
+              
+              <!-- Smart Notifications -->
+              <div class="settings-row">
+                <div class="settings-label-wrapper">
+                  <div class="settings-title">Smart Keyword Notifications</div>
+                  <div class="settings-desc">Receive popups when new posts match your custom keywords.</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="smart-notifications-toggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <!-- Keyword Subscription List -->
+              <div class="settings-row" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                <div class="settings-title">Your Notification Keywords</div>
+                <div class="settings-desc" style="margin-bottom: 0.5rem;">Enter keywords separated by commas (e.g. cricket, science, node)</div>
+                <div style="display: flex; gap: 0.5rem; width: 100%;">
+                  <input type="text" class="form-input-node" id="sub-keywords-input" placeholder="cricket, science">
+                  <button type="button" class="submit-btn-node" id="save-keywords-btn" style="padding: 0.6rem 1.2rem;">Save</button>
+                </div>
+              </div>
+
+              <!-- Phone Verification binding -->
+              <div class="settings-row" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                <div class="settings-title">Mobile SMS Alerts Binds</div>
+                <div class="settings-desc" style="margin-bottom: 0.5rem;">Set up your mobile number to receive language change codes via Twilio SMS.</div>
+                <div style="display: flex; gap: 0.5rem; width: 100%; flex-wrap: wrap;">
+                  <input type="tel" class="form-input-node" id="phone-sms-input" placeholder="+1234567890" style="flex: 1; min-width: 200px;">
+                  <label class="switch" style="margin: 0.5rem 0;">
+                    <input type="checkbox" id="phone-sms-toggle">
+                    <span class="slider"></span>
+                  </label>
+                  <button type="button" class="submit-btn-node" id="save-phone-btn" style="padding: 0.6rem 1.2rem;">Save Phone</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Mac-Style Dock -->
+      <div class="mac-dock-container">
+        <button class="mac-dock-item sidebar-btn active" data-tab="feed-tab" aria-label="Real-Time Feed">
+          <span>📰</span>
+          <span class="mac-dock-label" data-i18n="tab_feed">Real-Time Feed</span>
+        </button>
+        <button class="mac-dock-item sidebar-btn" data-tab="compose-tab" aria-label="Compose Tweet">
+          <span>✍️</span>
+          <span class="mac-dock-label" data-i18n="tab_compose">Compose Tweet</span>
+        </button>
+        <button class="mac-dock-item sidebar-btn" data-tab="sub-tab" aria-label="Plans & Billing">
+          <span>💳</span>
+          <span class="mac-dock-label" data-i18n="tab_billing">Plans & Billing</span>
+        </button>
+        <button class="mac-dock-item sidebar-btn" data-tab="history-tab" aria-label="Login History">
+          <span>🕒</span>
+          <span class="mac-dock-label" data-i18n="tab_history">Login History</span>
+        </button>
+        <button class="mac-dock-item sidebar-btn" data-tab="settings-tab" aria-label="Settings">
+          <span>⚙️</span>
+          <span class="mac-dock-label" data-i18n="tab_settings">Settings</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Foot -->
+  <footer>
+    <p data-i18n="footer_copyright">&copy; 2026 TweetBox. All rights reserved.</p>
+  </footer>
+
+  <!-- Modal containers -->
+  <div id="otp-modal-container"></div>
+  <div id="toast-container"></div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgot-password-modal" style="display: none; position: fixed; z-index: 11000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(4,7,17,0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center;">
+    <div class="glass-panel" style="width: 90%; max-width: 450px; margin: auto; padding: 2rem;">
+      <h2 style="margin-bottom: 0.5rem; color: #fbbf24;">🔑 Request Temporary Password</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">
+        Enter your registered email address or phone number. A letters-only temporary code will be emailed.
+      </p>
+      <form id="forgot-password-form" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="text" class="form-input-node" id="forgot-identifier" placeholder="Email or Phone Number" required>
+        <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.5rem;">
+          <button type="button" class="buy-btn" id="close-forgot-modal-btn">Cancel</button>
+          <button type="submit" class="submit-btn-node">Request Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript Client Core -->
+  <script src="/assets/js/apiClient.js"></script>
+  <script src="/assets/js/i18n.js"></script>
+  <script src="/assets/js/otpModal.js"></script>
+  <script src="/assets/js/languageSwitcher.js"></script>
+  <script src="/assets/js/background.js"></script>
+  <script src="/assets/js/socketClient.js"></script>
+  <script src="/assets/js/BorderGlow.js"></script>
+  <script src="/assets/js/ClickSpark.js"></script>
+  <script src="/assets/js/Dock.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

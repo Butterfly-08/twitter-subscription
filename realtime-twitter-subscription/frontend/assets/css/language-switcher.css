@@ -1,0 +1,13 @@
+#language-switcher {
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+}
+#language-switcher:focus {
+  border-color: #3498db;
+}

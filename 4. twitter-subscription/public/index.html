@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Tweets</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-text">AudioStream</span>
+            <div class="logo-pulse"></div>
+        </div>
+        <button id="btn-open-composer" class="compose-btn">
+            <span class="waveform-icon">
+                <i></i><i></i><i></i>
+            </span>
+            Compose Audio Tweet
+        </button>
+    </nav>
+
+    <!-- Main Feed -->
+    <main class="feed-container">
+        <div id="feed-list" class="feed-list">
+            <!-- Audio tweets will be injected here -->
+            <div class="loading-feed">Loading tweets...</div>
+        </div>
+    </main>
+
+    <!-- Composer Modal -->
+    <div id="composer-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h2>New Audio Tweet</h2>
+                <button id="btn-close-composer" class="close-btn" aria-label="Close modal">&times;</button>
+            </div>
+            
+            <!-- Window Status Banner -->
+            <div id="window-status-banner" class="status-banner">
+                <span id="window-status-text">Checking window status...</span>
+            </div>
+
+            <div class="modal-body">
+                <!-- State 1: Record / Upload -->
+                <div id="state-record-upload" class="state-view">
+                    <div class="record-section">
+                        <button id="btn-mic" class="mic-btn" aria-label="Start recording">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                        </button>
+                        <canvas id="waveform-canvas"></canvas>
+                        <div id="record-timer" class="record-timer">00:00</div>
+                    </div>
+                    
+                    <div class="divider"><span>OR</span></div>
+                    
+                    <div id="upload-zone" class="upload-zone">
+                        <p>Drag & drop audio file here or <span class="text-link">browse</span></p>
+                        <input type="file" id="file-input" accept="audio/*" class="hidden-input">
+                        <div id="file-info" class="file-info hidden"></div>
+                    </div>
+
+                    <div id="error-banner" class="error-banner hidden"></div>
+
+                    <div class="action-bar">
+                        <button id="btn-continue-verify" class="primary-btn" disabled>Continue to verify</button>
+                    </div>
+                </div>
+
+                <!-- State 2: Review Player -->
+                <div id="state-review" class="state-view hidden">
+                    <div class="review-player">
+                        <button id="btn-review-play" class="play-pause-btn">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            <svg class="pause-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        </button>
+                        <div class="scrubber">
+                            <div id="review-progress" class="progress-bar"></div>
+                        </div>
+                        <div id="review-duration" class="duration-label">0:00</div>
+                    </div>
+                    
+                    <div class="caption-input-container">
+                        <textarea id="tweet-caption" placeholder="Add a caption... (optional)" maxlength="280"></textarea>
+                    </div>
+
+                    <div class="action-bar flex-between">
+                        <button id="btn-discard" class="ghost-btn">Discard</button>
+                        <button id="btn-goto-otp" class="primary-btn">Continue to verify</button>
+                    </div>
+                </div>
+
+                <!-- State 3: OTP Verification -->
+                <div id="state-otp" class="state-view hidden">
+                    <div class="otp-header">
+                        <h3>Verification Code</h3>
+                        <p>Enter the 6-digit code sent to your email.</p>
+                    </div>
+                    
+                    <div class="otp-input-group">
+                        <input type="text" maxlength="1" class="otp-box" data-index="0">
+                        <input type="text" maxlength="1" class="otp-box" data-index="1">
+                        <input type="text" maxlength="1" class="otp-box" data-index="2">
+                        <input type="text" maxlength="1" class="otp-box" data-index="3">
+                        <input type="text" maxlength="1" class="otp-box" data-index="4">
+                        <input type="text" maxlength="1" class="otp-box" data-index="5">
+                    </div>
+
+                    <div class="otp-footer">
+                        <div class="otp-countdown-container">
+                            <span id="otp-expiry-text">Code expires in 05:00</span>
+                            <div class="otp-progress-bar">
+                                <div id="otp-progress-fill"></div>
+                            </div>
+                        </div>
+                        <button id="btn-resend-otp" class="text-link" disabled>Resend OTP (30s)</button>
+                    </div>
+
+                    <div id="otp-error-banner" class="error-banner hidden"></div>
+
+                    <div class="action-bar">
+                        <button id="btn-verify-post" class="primary-btn">Verify & Post</button>
+                    </div>
+                </div>
+
+                <!-- State 4: Success -->
+                <div id="state-success" class="state-view hidden">
+                    <div class="success-animation">
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                        </svg>
+                    </div>
+                    <h3>Tweet Posted!</h3>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden audio element for duration validation & review -->
+    <audio id="hidden-audio"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

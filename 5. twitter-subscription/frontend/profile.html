@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile - Smart Tweets</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas class="global-background-canvas" id="global-background-canvas"></canvas>
+  <div class="global-ambient-glow" id="global-ambient-glow"></div>
+  <nav>
+    <h1>Smart Tweets</h1>
+    <div class="nav-links">
+      <a href="index.html" id="home-link">Home</a>
+      <a href="profile.html" id="profile-link">Profile</a>
+      <a href="#" id="logout-btn">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h2 id="current-username">@username</h2>
+      <p class="desc">Manage your profile and settings here.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔔 Smart Notifications</h2>
+      <p class="desc">Get an instant popup whenever a new tweet mentions <strong>cricket</strong> or <strong>science</strong>.</p>
+      
+      <div class="toggle-wrapper">
+        <span class="toggle-label-text">Notify me about Cricket & Science tweets</span>
+        <div style="display: flex; align-items: center;">
+          <label class="toggle-switch">
+            <input type="checkbox" id="notification-toggle" aria-checked="false" role="switch">
+            <span class="slider"></span>
+          </label>
+          <span class="saved-confirm" id="saved-confirm">Saved ✓</span>
+        </div>
+      </div>
+      
+      <div class="status-line" id="status-line">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-text">Loading...</span>
+        <a href="#" class="help-link" id="help-link" style="display: none;" title="Check your browser settings to allow notifications for this site.">Learn how to enable</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💬 Phone Notifications</h2>
+      <p class="desc">Configure your registered phone number and notification preference.</p>
+      
+      <div class="form-group" style="margin-bottom: 1.5rem;">
+        <label for="profile-phone" style="font-size: 0.9rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Phone Number</label>
+        <input class="form-input-node" type="tel" id="profile-phone" placeholder="Enter your phone number">
+      </div>
+
+      <div class="toggle-wrapper">
+        <span class="toggle-label-text">Enable SMS notifications</span>
+        <div style="display: flex; align-items: center;">
+          <label class="toggle-switch">
+            <input type="checkbox" id="phone-notification-toggle" aria-checked="false" role="switch">
+            <span class="slider"></span>
+          </label>
+          <span class="saved-confirm" id="phone-saved-confirm">Saved ✓</span>
+        </div>
+      </div>
+      
+      <button id="save-phone-btn" class="submit-btn-node" style="margin-top: 1rem; width: auto; padding: 0.5rem 1.5rem !important;">Save Phone Details</button>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/background.js"></script>
+</body>
+</html>
