@@ -1,0 +1,66 @@
+Requirements - Tweet Subscription App
+========================================================================
+
+This project has TWO servers that run separately and connect over HTTP:
+  backend/   -> Node.js + Express.js API (port 5000)
+  frontend/  -> Next.js app (port 3000)
+
+------------------------------------------------------------------------
+BACKEND (backend/package.json)
+------------------------------------------------------------------------
+Runtime:
+- node.js v18+
+- npm v9+
+- MongoDB (local mongod, or free MongoDB Atlas cluster)
+
+Dependencies:
+- express ^4.19.2
+- mongoose ^8.5.1
+- bcryptjs ^2.4.3
+- jsonwebtoken ^9.0.2
+- razorpay ^2.9.4
+- nodemailer ^6.9.14
+- moment-timezone ^0.5.45
+- dotenv ^16.4.5
+- cors ^2.8.5
+- ua-parser-js ^1.0.38     -> parses browser/os/device type from user agent
+
+Dev dependency:
+- nodemon ^3.1.4
+
+------------------------------------------------------------------------
+FRONTEND (frontend/package.json)
+------------------------------------------------------------------------
+Runtime:
+- node.js v18+
+- npm v9+
+
+Dependencies:
+- next 14.2.5
+- react ^18.3.1
+- react-dom ^18.3.1
+
+------------------------------------------------------------------------
+EXTERNAL ACCOUNTS NEEDED
+------------------------------------------------------------------------
+- MongoDB database (local or Atlas free tier)
+- Razorpay account - only required if DEMO_MODE=false in backend/.env
+  (https://dashboard.razorpay.com)
+- SMTP email account for invoice emails (Gmail App Password works fine)
+
+------------------------------------------------------------------------
+INSTALL STEPS
+------------------------------------------------------------------------
+Terminal 1 (backend):
+  cd backend
+  npm install
+  copy .env.example .env      (fill in your values)
+  npm run dev
+
+Terminal 2 (frontend):
+  cd frontend
+  npm install
+  copy .env.local.example .env.local
+  npm run dev
+
+Then open http://localhost:3000 in your browser. Keep both terminals running.

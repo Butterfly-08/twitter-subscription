@@ -1,0 +1,467 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #040711;
+  color: #f8fafc;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #040711;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.3);
+}
+
+.app-viewport-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.global-background-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.navbar {
+  background: rgba(8, 12, 24, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: white;
+  padding: 16px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #1da1f2, #00f0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+
+.nav-user {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-user span {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.nav-user button {
+  background: transparent;
+  color: #00f0ff;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.nav-user button:hover {
+  background: rgba(0, 240, 255, 0.06);
+  border-color: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+}
+
+.container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 15px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Glassmorphic Container Blocks */
+.auth-box,
+.card {
+  background: rgba(8, 12, 24, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.auth-box:hover,
+.card:hover {
+  border-color: rgba(0, 240, 255, 0.12);
+  box-shadow: 0 15px 35px rgba(0, 240, 255, 0.02), 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.auth-box {
+  max-width: 400px;
+  margin: 60px auto;
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, #ffffff, #94a3b8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.2rem;
+  border-radius: 10px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: #64748b;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+  background: rgba(29, 161, 242, 0.1);
+  border: 1px solid rgba(29, 161, 242, 0.2);
+  color: #00f0ff;
+}
+
+/* Forms & Input Controls */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-form input,
+textarea.tweet-box {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.06) !important;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #00ffff !important;
+  font-family: inherit;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.auth-form input:focus,
+textarea.tweet-box:focus {
+  outline: none;
+  border-color: #00f0ff !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.12) !important;
+}
+
+.auth-form button {
+  background: linear-gradient(135deg, #1da1f2 0%, #00f0ff 100%);
+  color: #040711;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.auth-form button:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 20px rgba(29, 161, 242, 0.35);
+}
+
+.auth-form button:disabled {
+  background: rgba(255, 255, 255, 0.05);
+  color: #475569;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Password Widget Setup */
+.password-field {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.password-field input {
+  flex: 1;
+  padding-right: 60px;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #00f0ff;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.forgot-link {
+  text-align: right;
+  font-size: 13px;
+}
+
+.forgot-link a {
+  color: #94a3b8;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.forgot-link a:hover {
+  color: #1da1f2;
+}
+
+.msg {
+  font-size: 13px;
+  color: #fca5a5;
+  min-height: 18px;
+  text-align: center;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  padding: 8px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.msg.success {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.06);
+  border-color: rgba(34, 197, 94, 0.15);
+}
+
+/* Dashboard Layout Grid */
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+}
+
+textarea.tweet-box {
+  min-height: 110px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.tweet-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.tweet-actions button {
+  background: linear-gradient(135deg, #1da1f2 0%, #00f0ff 100%);
+  color: #040711;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.tweet-actions button:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 20px rgba(29, 161, 242, 0.35);
+}
+
+.tweet-actions button:disabled {
+  background: rgba(255, 255, 255, 0.05);
+  color: #475569;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.char-count {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.tweet-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px 0;
+}
+
+.tweet-item:last-child {
+  border-bottom: none;
+}
+
+.tweet-item p {
+  color: #cbd5e1;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.tweet-date {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+.note {
+  font-size: 0.85rem;
+  color: #fca5a5;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.plans-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.plan-card {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.plan-card:hover {
+  border-color: rgba(29, 161, 242, 0.25);
+  background: rgba(29, 161, 242, 0.02);
+}
+
+.plan-card h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.plan-card .price {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.plan-card button {
+  width: 100%;
+  background: linear-gradient(135deg, #1da1f2 0%, #00f0ff 100%);
+  color: #040711;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.plan-card button:hover:not(:disabled) {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 15px rgba(29, 161, 242, 0.35);
+}
+
+.plan-card button.current {
+  background: rgba(255, 255, 255, 0.05);
+  color: #64748b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.plan-card button:disabled:not(.current) {
+  background: rgba(255, 255, 255, 0.03);
+  color: #475569;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.current-plan-box {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+.current-plan-box strong {
+  color: #f8fafc;
+}
+
+.payment-item {
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 12px 0;
+  color: #cbd5e1;
+}
+
+.payment-item:last-child {
+  border-bottom: none;
+}
+
+.loading-text {
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
